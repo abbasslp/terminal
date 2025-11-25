@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: "Courier New", monospace;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+}
+
+/* unvisited link */
+a:link {
+  color: rgb(120, 0, 175);
+  text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+  color: rgb(0, 121, 161);
+  text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+  color: rgb(107, 34, 155);
+  text-decoration: none;
+  background-color: rgba(0, 163, 163, 0.631);
+  border-radius: 10px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+/* selected link */
+a:active {
+  color: rgb(120, 0, 175);
+  text-decoration: none;
+}
+
+.workspace {
+  padding: 5px;
+  padding-right: 0px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+#terminal {
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  padding-top: 0px;
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  background: rgb(37, 38, 40);
+  border-radius: 10px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.terminal-header .action {
+  display: flex;
+  align-items: center;
+}
+
+.terminal-header .action ul {
+  list-style: none;
+  display: flex;
+  padding-left: 10px;
+}
+
+.terminal-header .action ul li {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.terminal-header .action ul li:nth-child(1) {
+  background: #ff605c;
+}
+
+.terminal-header .action ul li:nth-child(2) {
+  background: #ffbd44;
+}
+
+.terminal-header .action ul li:nth-child(3) {
+  background: #00ca4e;
+}
+
+#output {
+  margin-top: 5px;
+}
+
+#commandLine {
+  display: flex;
+  align-items: center;
+}
+
+.prompt {
+  color: #00ff00; /* Green color for the prompt */
+}
+
+.result {
+  line-height: 18px;
+  color: rgb(153, 153, 153);
+}
+
+.previous-commend {
+  display: inline;
+  color: #ffffff;
+  font-family: "Courier New", monospace;
+}
+
+#commandInput {
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  font-family: "Courier New", monospace;
+  outline: none;
+  margin-left: 5px;
+}
+
+#skills div:first-child {
+  color: rgb(161, 128, 183);
+}
+
+#skills {
+  color: rgb(153, 153, 153);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 600px) {
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    font-size: 16px; /* Adjust the font size as desired */
+  }
+  #terminal {
+    width: 99%;
+    margin: 0 auto;
+    font-size: 16px;
+    height: 100vh;
+  }
+  .terminal-header {
+    padding: 10px;
+  }
+  .previous-commend {
+    overflow-wrap: break-word;
+  }
+  .prompt {
+    overflow-wrap: break-word;
+  }
+  .result {
+    font-size: 14px;
+    overflow-wrap: break-word;
+  }
+  .terminal-header .action ul {
+    padding-left: 5px;
+  }
+  .terminal-header .action ul li {
+    width: 12px;
+    height: 12px;
+  }
+}
+
