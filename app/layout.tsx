@@ -20,6 +20,39 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Abbas Salmanpour',
+    alternateName: 'Abbas SLP',
+    jobTitle: 'Filmmaker, Director, Editor, and Software Developer',
+    description: 'Filmmaker, Director, Editor, and Software Developer. Specializing in directing and editing cinematic music videos, advanced editing and color grading in DaVinci Resolve, and software development.',
+    url: 'https://satyars.com',
+    sameAs: [
+      'https://t.me/slpabbas',
+    ],
+    email: 'aspersiangolf@gmail.com',
+    birthPlace: {
+      '@type': 'Place',
+      name: 'Bandar Abbas (Gambron), Iran',
+    },
+    knowsAbout: [
+      'Video Editing',
+      'Film Directing',
+      'DaVinci Resolve',
+      'Color Grading',
+      'Music Video Production',
+      'Next.js',
+      'React',
+      'Golang',
+      'Software Development',
+    ],
+    alumniOf: {
+      '@type': 'Organization',
+      name: 'Professional Career Started 2017',
+    },
+  }
+
   return (
     <html lang="en">
       <head>
@@ -27,6 +60,10 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
       </head>
       <body>{children}</body>
     </html>
