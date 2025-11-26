@@ -37,7 +37,16 @@ export default function Terminal() {
   }, [])
 
   useEffect(() => {
-    initTerminal()
+    // Use requestIdleCallback for non-critical initialization
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        initTerminal()
+      })
+    } else {
+      setTimeout(() => {
+        initTerminal()
+      }, 0)
+    }
   }, [isMobile])
 
   useEffect(() => {
@@ -294,15 +303,21 @@ export default function Terminal() {
           ))}
         </div>
         <div className="flex items-center mt-2">
+          <label htmlFor="commandInput" className="sr-only">
+            Terminal command input
+          </label>
           <span className="text-[#00ff00] font-mono text-sm" id="prompt-div">
             {getCurrentPrompt()}
           </span>
           <input
+            id="commandInput"
             type="text"
             className="flex-1 bg-transparent border-none outline-none text-white font-mono text-sm ml-2"
             ref={inputRef}
             onKeyDown={handleKeyDown}
             autoFocus
+            aria-label="Terminal command input"
+            aria-describedby="prompt-div"
           />
         </div>
       </div>

@@ -2,8 +2,29 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'SLP',
-  description: 'ABBAS SLP - Music Video Director & Editor Portfolio',
+  title: 'ABBAS SLP - Filmmaker, Director & Editor Portfolio',
+  description: 'ABBAS SLP - Music Video Director & Editor Portfolio. Filmmaker, Director, Editor, and Software Developer specializing in cinematic music videos, DaVinci Resolve, and software development.',
+  keywords: ['Abbas Salmanpour', 'ABBAS SLP', 'Filmmaker', 'Video Director', 'Video Editor', 'DaVinci Resolve', 'Music Video', 'Software Developer'],
+  authors: [{ name: 'Abbas Salmanpour' }],
+  creator: 'Abbas Salmanpour',
+  publisher: 'Abbas Salmanpour',
+  metadataBase: new URL('https://abbasslp.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'ABBAS SLP - Filmmaker, Director & Editor Portfolio',
+    description: 'Filmmaker, Director, Editor, and Software Developer. Specializing in cinematic music videos, DaVinci Resolve, and software development.',
+    url: 'https://abbasslp.com',
+    siteName: 'ABBAS SLP Portfolio',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ABBAS SLP - Filmmaker, Director & Editor Portfolio',
+    description: 'Filmmaker, Director, Editor, and Software Developer. Specializing in cinematic music videos, DaVinci Resolve, and software development.',
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -27,7 +48,7 @@ export default function RootLayout({
     alternateName: 'Abbas SLP',
     jobTitle: 'Filmmaker, Director, Editor, and Software Developer',
     description: 'Filmmaker, Director, Editor, and Software Developer. Specializing in directing and editing cinematic music videos, advanced editing and color grading in DaVinci Resolve, and software development.',
-    url: 'https://satyars.com',
+    url: 'https://abbasslp.com',
     sameAs: [
       'https://t.me/slpabbas',
     ],
@@ -56,6 +77,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://abbasslp.com" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
