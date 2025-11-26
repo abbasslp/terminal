@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 
 interface OutputLine {
@@ -17,9 +17,15 @@ interface Skill {
 
 export default function Terminal() {
   // Initialize with default content immediately for better Speed Index
-  const [isMobile, setIsMobile] = useState(false)
+  // Use useLayoutEffect to prevent layout shift by syncing state before paint
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 767
+    }
+    return false
+  })
   const [output, setOutput] = useState<OutputLine[]>(() => {
-    // Initialize with default hint immediately
+    // Initialize with default hint immediately based on initial screen size
     if (typeof window !== 'undefined') {
       return window.innerWidth <= 767
         ? [{ type: 'result', content: "hint : type 'help'" }]
@@ -29,19 +35,33 @@ export default function Terminal() {
   })
   const inputRef = useRef<HTMLInputElement>(null)
   const workspaceRef = useRef<HTMLDivElement>(null)
+  const hasInitialized = useRef(false)
+
+  // Use useLayoutEffect to sync state before paint to prevent CLS
+  useLayoutEffect(() => {
+    if (hasInitialized.current) return
+    hasInitialized.current = true
+    
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 767
+      setIsMobile(mobile)
+      // Only update output if it actually changed to prevent unnecessary re-renders
+      setOutput((prev) => {
+        const expectedContent = mobile ? "hint : type 'help'" : 'hint : slp --help'
+        if (prev.length === 1 && prev[0].content === expectedContent) {
+          return prev
+        }
+        return [{ type: 'result', content: expectedContent }]
+      })
+    }
+    checkMobile()
+  }, [])
 
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth <= 767
       setIsMobile(mobile)
-      // Update output if mobile state changed
-      if (mobile) {
-        setOutput([{ type: 'result', content: "hint : type 'help'" }])
-      } else {
-        setOutput([{ type: 'result', content: 'hint : slp --help' }])
-      }
     }
-    checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
@@ -54,12 +74,13 @@ export default function Terminal() {
 
   useEffect(() => {
     if (workspaceRef.current) {
-      setTimeout(() => {
+      // Use requestAnimationFrame for smoother scrolling and less layout shift
+      requestAnimationFrame(() => {
         workspaceRef.current?.scrollTo({
           top: workspaceRef.current.scrollHeight,
           behavior: 'smooth',
         })
-      }, 0)
+      })
     }
   }, [output])
 
@@ -254,8 +275,9 @@ export default function Terminal() {
         isMobile ? 'h-screen max-h-screen' : 'max-h-[600px]'
       )}
       onClick={handleClick}
+      style={{ contain: 'layout style paint' }}
     >
-      <div className="flex flex-col gap-y-2 border-b border-border p-4">
+      <div className="flex flex-col gap-y-2 border-b border-border p-4" style={{ minHeight: '60px' }}>
         <div className="flex flex-row gap-x-2">
           <div className="h-3 w-3 rounded-full bg-[#ff605c]"></div>
           <div className="h-3 w-3 rounded-full bg-[#ffbd44]"></div>
@@ -268,10 +290,11 @@ export default function Terminal() {
           isMobile ? 'h-[calc(100vh-80px)]' : 'max-h-[500px]'
         )}
         ref={workspaceRef}
+        style={{ contain: 'layout style' }}
       >
-        <div className="space-y-1">
+        <div className="space-y-1" style={{ minHeight: '20px' }}>
           {output.map((line, index) => (
-            <div key={index}>
+            <div key={index} style={{ minHeight: '18px' }}>
               {line.type === 'command' ? (
                 <div className="flex items-center">
                   <span className="text-[#00ff00] font-mono text-sm">
@@ -288,7 +311,7 @@ export default function Terminal() {
             </div>
           ))}
         </div>
-        <div className="flex items-center mt-2">
+        <div className="flex items-center mt-2" style={{ minHeight: '24px' }}>
           <label htmlFor="commandInput" className="sr-only">
             Terminal command input
           </label>
