@@ -16,14 +16,30 @@ interface Skill {
 }
 
 export default function Terminal() {
-  const [output, setOutput] = useState<OutputLine[]>([])
+  // Initialize with default content immediately for better Speed Index
   const [isMobile, setIsMobile] = useState(false)
+  const [output, setOutput] = useState<OutputLine[]>(() => {
+    // Initialize with default hint immediately
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 767
+        ? [{ type: 'result', content: "hint : type 'help'" }]
+        : [{ type: 'result', content: 'hint : slp --help' }]
+    }
+    return [{ type: 'result', content: 'hint : slp --help' }]
+  })
   const inputRef = useRef<HTMLInputElement>(null)
   const workspaceRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 767)
+      const mobile = window.innerWidth <= 767
+      setIsMobile(mobile)
+      // Update output if mobile state changed
+      if (mobile) {
+        setOutput([{ type: 'result', content: "hint : type 'help'" }])
+      } else {
+        setOutput([{ type: 'result', content: 'hint : slp --help' }])
+      }
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
@@ -37,19 +53,6 @@ export default function Terminal() {
   }, [])
 
   useEffect(() => {
-    // Use requestIdleCallback for non-critical initialization
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      requestIdleCallback(() => {
-        initTerminal()
-      })
-    } else {
-      setTimeout(() => {
-        initTerminal()
-      }, 0)
-    }
-  }, [isMobile])
-
-  useEffect(() => {
     if (workspaceRef.current) {
       setTimeout(() => {
         workspaceRef.current?.scrollTo({
@@ -60,23 +63,6 @@ export default function Terminal() {
     }
   }, [output])
 
-  const initTerminal = () => {
-    if (isMobile) {
-      setOutput([
-        {
-          type: 'result',
-          content: "hint : type 'help'",
-        },
-      ])
-    } else {
-      setOutput([
-        {
-          type: 'result',
-          content: 'hint : slp --help',
-        },
-      ])
-    }
-  }
 
   const getCurrentPrompt = () => {
     if (isMobile) {
