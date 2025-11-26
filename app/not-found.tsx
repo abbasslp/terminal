@@ -1,6 +1,19 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Lottie from 'lottie-react'
 
 export default function NotFound() {
+  const [animationData, setAnimationData] = useState(null)
+
+  useEffect(() => {
+    fetch('/404-error.json')
+      .then((res) => res.json())
+      .then((data) => setAnimationData(data))
+      .catch(() => setAnimationData(null))
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
@@ -17,19 +30,29 @@ export default function NotFound() {
           {/* Terminal Content */}
           <div className="p-6 space-y-4">
             <div className="font-mono text-sm">
+              {animationData && (
+                <div className="flex justify-center mb-4">
+                  <div className="w-64 h-64">
+                    <Lottie
+                      animationData={animationData}
+                      loop={true}
+                      autoplay={true}
+                    />
+                  </div>
+                </div>
+              )}
+              
               <div className="text-[#00ff00] mb-2">
                 <span>abbasslp@SLP-MacBook-Pro %</span>
                 <span className="text-white"> cat 404.txt</span>
               </div>
               
-              <div className="text-[#999] space-y-2 mt-4">
-                <div className="text-6xl font-bold text-[#ff605c] mb-4">404</div>
-                <div className="text-xl text-white mb-2">Page Not Found</div>
-                <div className="text-[#999] mb-4">
+              <div className="text-[#999]">
+                <div className="text-[#999] mb-4 text-center">
                   The page you are looking for does not exist.
                 </div>
                 
-                <div className="mt-6 space-y-2">
+                <div className="mt-4 space-y-2">
                   <div className="text-[#00ff00]">$ ls -la /</div>
                   <div className="text-[#999] pl-4">
                     <div>drwxr-xr-x  home</div>
@@ -61,5 +84,7 @@ export default function NotFound() {
     </div>
   )
 }
+
+
 
 
